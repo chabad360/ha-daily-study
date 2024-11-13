@@ -1,0 +1,12 @@
+{
+    "domain": "daily_study",
+    "name": "Sefaria Calendar Integration",
+    "version": "1.0",
+    "config_flow": true,
+    "requirements": [],
+    "dependencies": [],
+    "codeowners": ["@chabad360"],
+    "integration_type": "device",
+    "iot_class": "cloud_polling",
+    "supported_platforms": ["sensor"]
+  }
