@@ -1,19 +1,20 @@
-from typing import Any
-
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 
 ITEM_TYPE = "Daily Study"
 
 
-class SefariaSensor(SensorEntity):
+class SefariaSensor(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator):
-        self.coordinator = coordinator
         self._state = None
+        super().__init__(coordinator)
         self._item_type = ITEM_TYPE
         self._name = f"{self._item_type} {self._detail_type}"
         self._unique_id = f"{self._item_type}_{self._detail_type}"
+        self.icon = "mdi:book-open-variant-outline"
+        self.attribution = "Data provided by Sefaria"
 
     @property
     def name(self):
@@ -37,10 +38,5 @@ class SefariaSensor(SensorEntity):
         }
 
     async def async_added_to_hass(self):
-        self.async_on_remove(
-            self.coordinator.async_add_listener(self.async_write_ha_state)
-        )
-        self.async_update_from_data()
-
-    async def async_update(self):
-        self.async_update_from_data()
+        await super().async_added_to_hass()
+        self._handle_coordinator_update()
